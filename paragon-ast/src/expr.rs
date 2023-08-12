@@ -1,3 +1,4 @@
+use derive_new::new;
 use crate::symbol::Symbol;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -9,32 +10,38 @@ pub enum Expression<'src> {
     UnaryExpression(UnaryExpression<'src>),
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct IntegerExpression {
     pub value: u16,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct FunctionCall<'src> {
     pub name: FunctionCallName<'src>,
     pub params: FunctionCallParams<'src>,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct FunctionCallName<'src> {
     pub name: &'src str,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct FunctionCallParams<'src> {
     pub params: Vec<FunctionCallParam<'src>>,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct FunctionCallParam<'src> {
     pub expr: Box<Expression<'src>>,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InfixExpression<'src> {
     pub lhs: Box<Expression<'src>>,
@@ -82,6 +89,7 @@ pub enum InfixOperator {
     Mod,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct UnaryExpression<'src> {
     pub expr: Box<Expression<'src>>,

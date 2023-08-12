@@ -1,5 +1,5 @@
 [workspace]
 members = [
     "paragon",
-    "paragon-ast"
+    "paragon-ast",
 ]

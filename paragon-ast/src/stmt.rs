@@ -1,3 +1,4 @@
+use derive_new::new;
 use crate::{symbol::Symbol, expr::Expression};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
@@ -7,6 +8,7 @@ pub enum Statement<'src> {
 }
 
 /// [ symbol: ] name operaond
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InstructionStatement<'src> {
     pub symbol: Option<Symbol<'src>>,
@@ -14,11 +16,13 @@ pub struct InstructionStatement<'src> {
     pub params: InstructionParams<'src>,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InstructionName<'src> {
     pub name: &'src str,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InstructionParams<'src> {
     pub params: Vec<InstructionParam<'src>>
@@ -32,21 +36,25 @@ pub enum InstructionParam<'src> {
     Indirect(Indirect<'src>),
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Accumulator;
 
 /// expr [ , x ] | [ , y ]
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct AbsoluteOrZeropage<'src> {
     pub expr: Expression<'src>,
     pub register: Option<IndexableRegister>,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Relative<'src> {
     pub symbol: Symbol<'src>,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Indirect<'src> {
     pub expr: Expression<'src>,
@@ -60,6 +68,7 @@ pub enum IndexableRegister {
 }
 
 /// [ symbol: ] .name operand
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PseudoInstructionStatement<'src> {
     pub symbol: Option<Symbol<'src>>,
@@ -67,16 +76,19 @@ pub struct PseudoInstructionStatement<'src> {
     pub params: PseudoInstructionParams<'src>,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PseudoInstructionName<'src> {
     pub name: &'src str,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PseudoInstructionParams<'src> {
     pub params: Vec<PseudoInstructionParam<'src>>,
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PseudoInstructionParam<'src> {
     pub expr: Expression<'src>,
