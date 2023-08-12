@@ -99,7 +99,7 @@ _ident12
 Below is operators and symbols which the lexer recognize.
 
 ```
-+ - * / % & | ^ << >> && || ! < > <= >= == !=
++ - * / % & | ^ << >> && || ! < > <= >= == != !
 ```
 
 ```
@@ -219,6 +219,7 @@ There are two type of symbol: global symbol and local symbol.
 <unary-expression> ::= <primary-expression>
                      | "~" <unary-expression>
                      | "-" <unary-expression>
+                     | "!" <unary-expression>
 <primary-expression> ::= <integer-lit>
                        | <symbol>
                        | <function-call>
@@ -250,28 +251,24 @@ typeof("hello") // => "string"
 ### Instruction Statement
 
 ```
-<instruction-statement> ::= [ <symbol> ":" ]     <actual-inst-name> <actual-inst-operand> <newline>
-                          | [ <symbol> ":" ] "." <pseudo-inst-name> <pseudo-inst-operand> <newline>
+<instruction-statement> ::= [ <symbol> ":" ]     <actual-inst-name> [ <actual-inst-params> ] <newline>
+                          | [ <symbol> ":" ] "." <pseudo-inst-name> [ <pseudo-inst-params> ] <newline>
 
 <actual-inst-name> ::= <identifier> | /* valid 6502 opcode names */
 <pseudo-inst-name> ::= /* valid pseudo instruction names */
 
-<actual-inst-operand> ::= <actual-inst-params>
 <actual-inst-params> ::= <actual-inst-param> [ <actual-inst-params> ]
 <actual-inst-param> ::= <accumulator>
                       | <absolute-or-zeropage>
                       | <relative>
-                      | <implied>
                       | <indirect>
 <accumulator> ::= "a"
 <absolute-or-zeropage> ::= <expression>
                          | <expression> "," "x"
                          | <expression> "," "y"
 <relative> ::= <identifier>
-<implied> ::= /* empty */
 <indirect> ::= "[" <expression> [ "," "x" ] "]" [ "," "y" ]
 
-<pseudo-inst-operand> ::= [ <pseudo-inst-params> ]
 <pseudo-inst-params> ::= <pseudo-inst-param> [ <pseudo-inst-params> ]
 <pseudo-inst-param> ::= <expression>
 ```

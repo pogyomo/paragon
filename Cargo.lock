@@ -5,3 +5,7 @@ version = 3
 [[package]]
 name = "paragon"
 version = "0.1.0"
+
+[[package]]
+name = "paragon-ast"
+version = "0.1.0"
