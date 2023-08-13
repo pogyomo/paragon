@@ -1,3 +1,5 @@
+// HACK: Can I automatically implement from trait for each statement?
+
 use derive_new::new;
 use crate::{symbol::Symbol, expr::Expression};
 
@@ -14,6 +16,12 @@ pub struct InstructionStatement<'src> {
     pub symbol: Option<Symbol<'src>>,
     pub name: InstructionName<'src>,
     pub params: InstructionParams<'src>,
+}
+
+impl<'src> From<InstructionStatement<'src>> for Statement<'src> {
+    fn from(value: InstructionStatement<'src>) -> Self {
+        Statement::InstructionStatement(value)
+    }
 }
 
 #[derive(new)]
@@ -74,6 +82,12 @@ pub struct PseudoInstructionStatement<'src> {
     pub symbol: Option<Symbol<'src>>,
     pub name: PseudoInstructionName<'src>,
     pub params: PseudoInstructionParams<'src>,
+}
+
+impl<'src> From<PseudoInstructionStatement<'src>> for Statement<'src> {
+    fn from(value: PseudoInstructionStatement<'src>) -> Self {
+        Statement::PseudoInstructionStatement(value)
+    }
 }
 
 #[derive(new)]
