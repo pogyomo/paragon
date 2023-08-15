@@ -1,4 +1,9 @@
 /// TODO: Add span for each item
-pub mod expr;
-pub mod stmt;
-pub mod symbol;
+
+mod expr;
+mod stmt;
+mod symbol;
+
+pub use expr::*;
+pub use stmt::*;
+pub use symbol::*;
