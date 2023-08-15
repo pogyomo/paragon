@@ -9,7 +9,7 @@ pub enum Statement<'src> {
     PseudoInstructionStatement(PseudoInstructionStatement<'src>),
 }
 
-/// [ symbol: ] name operaond
+/// [ symbol: ] name params
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InstructionStatement<'src> {
@@ -81,7 +81,7 @@ pub enum IndexableRegister {
     Y,
 }
 
-/// [ symbol: ] .name operand
+/// [ symbol: ] .name params
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PseudoInstructionStatement<'src> {
