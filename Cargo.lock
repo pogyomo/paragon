@@ -10,12 +10,15 @@ checksum = "3418329ca0ad70234b9735dc4ceed10af4df60eff9c8e7b06cb5e520d92c3535"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn",
+ "syn 1.0.109",
 ]
 
 [[package]]
 name = "paragon"
 version = "0.1.0"
+dependencies = [
+ "paragon-lexer",
+]
 
 [[package]]
 name = "paragon-ast"
@@ -25,8 +28,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "paragon-lexer"
+version = "0.1.0"
+dependencies = [
+ "paragon-span",
+ "paragon-token",
+ "thiserror",
+]
+
+[[package]]
+name = "paragon-span"
+version = "0.1.0"
+dependencies = [
+ "derive-new",
+]
+
+[[package]]
 name = "paragon-token"
 version = "0.1.0"
+dependencies = [
+ "derive-new",
+ "paragon-span",
+]
 
 [[package]]
 name = "proc-macro2"
@@ -55,6 +78,37 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
+]
+
+[[package]]
+name = "syn"
+version = "2.0.28"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "04361975b3f5e348b2189d8dc55bc942f278b2d482a6a0365de5bdd62d351567"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "unicode-ident",
+]
+
+[[package]]
+name = "thiserror"
+version = "1.0.45"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dedd246497092a89beedfe2c9f176d44c1b672ea6090edc20544ade01fbb7ea0"
+dependencies = [
+ "thiserror-impl",
+]
+
+[[package]]
+name = "thiserror-impl"
+version = "1.0.45"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7d7b1fadccbbc7e19ea64708629f9d8dccd007c260d66485f20a6d41bc1cf4b3"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.28",
 ]
 
 [[package]]
