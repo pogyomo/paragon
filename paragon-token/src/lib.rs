@@ -55,6 +55,10 @@ pub enum Token<'src> {
     RSquare,
     /// ","
     Comma,
+
+    // Special
+    /// '\n'
+    Newline,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
