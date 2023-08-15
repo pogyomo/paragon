@@ -13,7 +13,7 @@ pub enum Statement<'src> {
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InstructionStatement<'src> {
-    pub symbol: Option<Symbol<'src>>,
+    pub symbol: Option<InstructionSymbol<'src>>,
     pub name: InstructionName<'src>,
     pub params: InstructionParams<'src>,
 }
@@ -22,6 +22,12 @@ impl<'src> From<InstructionStatement<'src>> for Statement<'src> {
     fn from(value: InstructionStatement<'src>) -> Self {
         Statement::InstructionStatement(value)
     }
+}
+
+#[derive(new)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub struct InstructionSymbol<'src> {
+    pub symbol: Symbol<'src>,
 }
 
 #[derive(new)]
@@ -79,7 +85,7 @@ pub enum IndexableRegister {
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PseudoInstructionStatement<'src> {
-    pub symbol: Option<Symbol<'src>>,
+    pub symbol: Option<PseudoInstructionSymbol<'src>>,
     pub name: PseudoInstructionName<'src>,
     pub params: PseudoInstructionParams<'src>,
 }
@@ -88,6 +94,12 @@ impl<'src> From<PseudoInstructionStatement<'src>> for Statement<'src> {
     fn from(value: PseudoInstructionStatement<'src>) -> Self {
         Statement::PseudoInstructionStatement(value)
     }
+}
+
+#[derive(new)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub struct PseudoInstructionSymbol<'src> {
+    pub symbol: Symbol<'src>,
 }
 
 #[derive(new)]
