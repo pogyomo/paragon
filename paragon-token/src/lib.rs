@@ -43,6 +43,8 @@ pub enum Token<'src> {
     EQ,
     /// "!="
     NE,
+    /// "~"
+    Tilde,
 
     // Symbols
     /// "("
