@@ -1,5 +1,20 @@
+use derive_new::new;
+
+#[derive(new)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Token<'src, S> {
+    pub kind: TokenKind<'src>,
+    span: S,
+}
+
+impl<'src, S> Token<'src, S> {
+    pub fn span(&self) -> &S {
+        &self.span
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub enum Token<'src> {
+pub enum TokenKind<'src> {
     // Literal
     Identifier(&'src str),
     Integer(&'src str, IntRadix),
