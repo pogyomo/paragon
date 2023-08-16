@@ -59,28 +59,6 @@ impl<'src> Lexer<'src> {
         let next = self.next_char().unwrap_or('\0');
 
         match (curr, next) {
-            ('+', _)   => one_char_token!(TokenKind::Plus),
-            ('-', _)   => one_char_token!(TokenKind::Minus),
-            ('*', _)   => one_char_token!(TokenKind::Star),
-            ('/', _)   => one_char_token!(TokenKind::Slash),
-            ('&', '&') => two_char_token!(TokenKind::And),
-            ('&', _)   => one_char_token!(TokenKind::Ampersand),
-            ('|', '|') => two_char_token!(TokenKind::Or),
-            ('|', _)   => one_char_token!(TokenKind::Vertical),
-            ('^', _)   => one_char_token!(TokenKind::Circumflex),
-            ('<', '<') => two_char_token!(TokenKind::LShift),
-            ('<', '=') => two_char_token!(TokenKind::LE),
-            ('<', _)   => one_char_token!(TokenKind::LT),
-            ('>', '>') => two_char_token!(TokenKind::RShift),
-            ('>', '=') => two_char_token!(TokenKind::GE),
-            ('>', _)   => one_char_token!(TokenKind::GT),
-            ('!', '=') => two_char_token!(TokenKind::NE),
-            ('!', _)   => one_char_token!(TokenKind::Not),
-            ('=', '=') => two_char_token!(TokenKind::EQ),
-            ('~', _)   => one_char_token!(TokenKind::Tilde),
-
-            ('\n', _)  => one_char_token!(TokenKind::Newline),
-
             (ch, _) if ch.is_ascii_alphabetic() || ch == '_' => {
                 let start = self.curr_offset;
                 self.advance_offset_while(|ch| ch.is_ascii_alphanumeric() || ch == '_');
@@ -128,7 +106,6 @@ impl<'src> Lexer<'src> {
                 let kind = TokenKind::Integer(body, IntRadix::Binary);
                 Some(Ok(Token::new(kind, Span::new(start, self.curr_offset))))
             }
-            ('%', _)   => one_char_token!(TokenKind::Percent),
             ('0', 'o') | ('0', 'O') => {
                 let start = self.curr_offset;
                 self.advance_offset();
@@ -146,6 +123,30 @@ impl<'src> Lexer<'src> {
                 let kind = TokenKind::Integer(body, IntRadix::Decimal);
                 Some(Ok(Token::new(kind, Span::new(start, self.curr_offset))))
             }
+
+            ('+', _)   => one_char_token!(TokenKind::Plus),
+            ('-', _)   => one_char_token!(TokenKind::Minus),
+            ('*', _)   => one_char_token!(TokenKind::Star),
+            ('/', _)   => one_char_token!(TokenKind::Slash),
+            ('%', _)   => one_char_token!(TokenKind::Percent),
+            ('&', '&') => two_char_token!(TokenKind::And),
+            ('&', _)   => one_char_token!(TokenKind::Ampersand),
+            ('|', '|') => two_char_token!(TokenKind::Or),
+            ('|', _)   => one_char_token!(TokenKind::Vertical),
+            ('^', _)   => one_char_token!(TokenKind::Circumflex),
+            ('<', '<') => two_char_token!(TokenKind::LShift),
+            ('<', '=') => two_char_token!(TokenKind::LE),
+            ('<', _)   => one_char_token!(TokenKind::LT),
+            ('>', '>') => two_char_token!(TokenKind::RShift),
+            ('>', '=') => two_char_token!(TokenKind::GE),
+            ('>', _)   => one_char_token!(TokenKind::GT),
+            ('!', '=') => two_char_token!(TokenKind::NE),
+            ('!', _)   => one_char_token!(TokenKind::Not),
+            ('=', '=') => two_char_token!(TokenKind::EQ),
+            ('~', _)   => one_char_token!(TokenKind::Tilde),
+
+            ('\n', _)  => one_char_token!(TokenKind::Newline),
+
             (ch, _) => {
                 let start = self.curr_offset;
                 self.advance_offset();
