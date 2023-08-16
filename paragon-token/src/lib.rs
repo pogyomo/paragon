@@ -1,15 +1,5 @@
-use derive_new::new;
-use paragon_span::Span;
-
-#[derive(new)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Token<'src> {
-    pub kind: TokenKind<'src>,
-    pub span: Span,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub enum TokenKind<'src> {
+pub enum Token<'src> {
     // Literal
     Identifier(&'src str),
     Integer(&'src str, IntRadix),
