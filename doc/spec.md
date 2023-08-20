@@ -10,7 +10,7 @@
     - [Operators And Symbols](#operators-and-symbols)
     - [Keywords](#keywords)
     - [Integer Literal](#integer-literal)
-- [Types And Type Casting]
+- [Types And Type Casting](#types-and-type-casting)
 - [Items In Source Code](#items-in-source-code)
     - [Global And Local Symbol](#global-and-local-symbol)
 - [Expression](#expression)
