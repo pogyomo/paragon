@@ -20,6 +20,7 @@ impl Span {
         Self { id, start, end }
     }
 
+    #[inline]
     pub fn id(&self) -> FileId {
         self.id
     }
