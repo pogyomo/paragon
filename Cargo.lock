@@ -26,8 +26,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "paragon-cache"
+version = "0.1.0"
+
+[[package]]
 name = "paragon-span"
 version = "0.1.0"
+dependencies = [
+ "paragon-cache",
+]
 
 [[package]]
 name = "paragon-token"
