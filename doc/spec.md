@@ -16,6 +16,7 @@
 - [Expression](#expression)
 - [Buildin Functions](#buildin-functions)
     - [typeof](#typeof)
+    - [bankof](#bankof)
 - [Statements](#statements)
     - [Instruction Statement](#instruction-statement)
 - [Pseudo Instructions](#pseudo-instructions)
@@ -240,6 +241,24 @@ Currently, possible return value is one of `"byte"`, `"word"` and `"string"`.
 typeof(10) // => "word"
 typeof(<10) // => "byte"
 typeof("hello") // => "string"
+```
+
+### bankof
+
+The `bankof` function take a identifier and return the bank number where the identifier
+is defined. If passed value is not identifier, cause error.
+
+```
+    .bank 0
+    .org $8000
+hoge:
+
+    .bank 1
+    .org $C000
+fuga:
+
+    bankof(hoge) // => 0
+    bankof(fuga) // => 1
 ```
 
 ## Statements
