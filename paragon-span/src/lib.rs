@@ -1,4 +1,4 @@
-use std::{ops::{Add, AddAssign}, path::Path};
+use std::ops::{Add, AddAssign};
 
 /// A trait for struct which hold its span.
 pub trait Spannable {
