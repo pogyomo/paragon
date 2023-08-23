@@ -61,6 +61,8 @@ pub enum TokenKind<'src> {
     NE,
     /// "~"
     Tilde,
+    /// "="
+    Equal,
 
     // Symbols
     /// "("

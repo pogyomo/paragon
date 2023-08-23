@@ -1,0 +1,9 @@
+[package]
+name = "paragon-lexer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+thiserror = "1.0.47"
+paragon-span = { path = "../paragon-span" }
+paragon-token = { path = "../paragon-token" }
