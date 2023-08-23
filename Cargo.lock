@@ -22,13 +22,19 @@ name = "paragon-ast"
 version = "0.1.0"
 dependencies = [
  "derive-new",
+ "paragon-span",
 ]
+
+[[package]]
+name = "paragon-span"
+version = "0.1.0"
 
 [[package]]
 name = "paragon-token"
 version = "0.1.0"
 dependencies = [
  "derive-new",
+ "paragon-span",
 ]
 
 [[package]]

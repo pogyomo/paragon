@@ -1,15 +1,16 @@
+use paragon_span::{Span, Spannable};
 use derive_new::new;
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Token<'src, S> {
+pub struct Token<'src> {
     pub kind: TokenKind<'src>,
-    span: S,
+    span: Span,
 }
 
-impl<'src, S> Token<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for Token<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 

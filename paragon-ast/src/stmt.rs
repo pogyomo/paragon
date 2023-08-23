@@ -1,16 +1,17 @@
 // HACK: Can I automatically implement from trait for each statement?
 
 use derive_new::new;
+use paragon_span::{Spannable, Span};
 use crate::{symbol::Symbol, expr::Expression};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub enum Statement<'src, S> {
-    InstructionStatement(InstructionStatement<'src, S>),
-    PseudoInstructionStatement(PseudoInstructionStatement<'src, S>),
+pub enum Statement<'src> {
+    InstructionStatement(InstructionStatement<'src>),
+    PseudoInstructionStatement(PseudoInstructionStatement<'src>),
 }
 
-impl<'src, S> Statement<'src, S> {
-    pub fn span(&self) -> &S {
+impl<'src> Spannable for Statement<'src> {
+    fn span(&self) -> Span {
         match self {
             Statement::InstructionStatement(inst) => inst.span(),
             Statement::PseudoInstructionStatement(pseudo) => pseudo.span(),
@@ -21,135 +22,135 @@ impl<'src, S> Statement<'src, S> {
 /// [ symbol: ] name params
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct InstructionStatement<'src, S> {
-    pub symbol: Option<InstructionSymbol<'src, S>>,
-    pub name: InstructionName<'src, S>,
-    pub params: InstructionParams<'src, S>,
-    span: S,
+pub struct InstructionStatement<'src> {
+    pub symbol: Option<InstructionSymbol<'src>>,
+    pub name: InstructionName<'src>,
+    pub params: InstructionParams<'src>,
+    span: Span,
 }
 
-impl<'src, S> InstructionStatement<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for InstructionStatement<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
-impl<'src, S> From<InstructionStatement<'src, S>> for Statement<'src, S> {
-    fn from(value: InstructionStatement<'src, S>) -> Self {
+impl<'src> From<InstructionStatement<'src>> for Statement<'src> {
+    fn from(value: InstructionStatement<'src>) -> Self {
         Statement::InstructionStatement(value)
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct InstructionSymbol<'src, S> {
-    pub symbol: Symbol<'src, S>,
-    span: S,
+pub struct InstructionSymbol<'src> {
+    pub symbol: Symbol<'src>,
+    span: Span,
 }
 
-impl<'src, S> InstructionSymbol<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for InstructionSymbol<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct InstructionName<'src, S> {
+pub struct InstructionName<'src> {
     pub name: &'src str,
-    span: S,
+    span: Span,
 }
 
-impl<'src, S> InstructionName<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for InstructionName<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct InstructionParams<'src, S> {
-    pub params: Vec<InstructionParam<'src, S>>,
-    span: S,
+pub struct InstructionParams<'src> {
+    pub params: Vec<InstructionParam<'src>>,
+    span: Span,
 }
 
-impl<'src, S> InstructionParams<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for InstructionParams<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub enum InstructionParam<'src, S> {
-    Accumulator(Accumulator<S>),
-    AbsoluteOrZeropage(AbsoluteOrZeropage<'src, S>),
-    Relative(Relative<'src, S>),
-    Indirect(Indirect<'src, S>),
+pub enum InstructionParam<'src> {
+    Accumulator(Accumulator),
+    AbsoluteOrZeropage(AbsoluteOrZeropage<'src>),
+    Relative(Relative<'src>),
+    Indirect(Indirect<'src>),
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Accumulator<S> {
-    span: S
+pub struct Accumulator {
+    span: Span
 }
 
-impl<S> Accumulator<S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl Spannable for Accumulator {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 /// expr [ , x ] | [ , y ]
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct AbsoluteOrZeropage<'src, S> {
-    pub expr: Expression<'src, S>,
-    pub register: Option<IndexableRegister<S>>,
-    span: S,
+pub struct AbsoluteOrZeropage<'src> {
+    pub expr: Expression<'src>,
+    pub register: Option<IndexableRegister>,
+    span: Span,
 }
 
-impl<'src, S> AbsoluteOrZeropage<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for AbsoluteOrZeropage<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Relative<'src, S> {
-    pub symbol: Symbol<'src, S>,
-    span: S,
+pub struct Relative<'src> {
+    pub symbol: Symbol<'src>,
+    span: Span,
 }
 
-impl<'src, S> Relative<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for Relative<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Indirect<'src, S> {
-    pub expr: Expression<'src, S>,
-    pub register: Option<IndexableRegister<S>>,
-    span: S,
+pub struct Indirect<'src> {
+    pub expr: Expression<'src>,
+    pub register: Option<IndexableRegister>,
+    span: Span,
 }
 
-impl<'src, S> Indirect<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for Indirect<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct IndexableRegister<S> {
+pub struct IndexableRegister {
     pub kind: IndexableRegisterKind,
-    span: S,
+    span: Span,
 }
 
-impl<S> IndexableRegister<S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl Spannable for IndexableRegister {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
@@ -162,73 +163,73 @@ pub enum IndexableRegisterKind {
 /// [ symbol: ] .name params
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct PseudoInstructionStatement<'src, S> {
-    pub symbol: Option<PseudoInstructionSymbol<'src, S>>,
-    pub name: PseudoInstructionName<'src, S>,
-    pub params: PseudoInstructionParams<'src, S>,
-    span: S,
+pub struct PseudoInstructionStatement<'src> {
+    pub symbol: Option<PseudoInstructionSymbol<'src>>,
+    pub name: PseudoInstructionName<'src>,
+    pub params: PseudoInstructionParams<'src>,
+    span: Span,
 }
 
-impl<'src, S> PseudoInstructionStatement<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for PseudoInstructionStatement<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
-impl<'src, S> From<PseudoInstructionStatement<'src, S>> for Statement<'src, S> {
-    fn from(value: PseudoInstructionStatement<'src, S>) -> Self {
+impl<'src> From<PseudoInstructionStatement<'src>> for Statement<'src> {
+    fn from(value: PseudoInstructionStatement<'src>) -> Self {
         Statement::PseudoInstructionStatement(value)
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct PseudoInstructionSymbol<'src, S> {
-    pub symbol: Symbol<'src, S>,
-    span: S,
+pub struct PseudoInstructionSymbol<'src> {
+    pub symbol: Symbol<'src>,
+    span: Span,
 }
 
-impl<'src, S> PseudoInstructionSymbol<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for PseudoInstructionSymbol<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct PseudoInstructionName<'src, S> {
+pub struct PseudoInstructionName<'src> {
     pub name: &'src str,
-    span: S,
+    span: Span,
 }
 
-impl<'src, S> PseudoInstructionName<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for PseudoInstructionName<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct PseudoInstructionParams<'src, S> {
-    pub params: Vec<PseudoInstructionParam<'src, S>>,
-    span: S,
+pub struct PseudoInstructionParams<'src> {
+    pub params: Vec<PseudoInstructionParam<'src>>,
+    span: Span,
 }
 
-impl<'src, S> PseudoInstructionParams<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for PseudoInstructionParams<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct PseudoInstructionParam<'src, S> {
-    pub expr: Expression<'src, S>,
-    span: S,
+pub struct PseudoInstructionParam<'src> {
+    pub expr: Expression<'src>,
+    span: Span,
 }
 
-impl<'src, S> PseudoInstructionParam<'src, S> {
-    pub fn span(&self) -> &S {
-        &self.span
+impl<'src> Spannable for PseudoInstructionParam<'src> {
+    fn span(&self) -> Span {
+        self.span
     }
 }

@@ -2,5 +2,6 @@
 members = [
     "paragon",
     "paragon-ast",
+    "paragon-span",
     "paragon-token",
 ]
