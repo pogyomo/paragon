@@ -4,6 +4,7 @@ members = [
     "paragon-ast",
     "paragon-cache",
     "paragon-lexer",
+    "paragon-parser",
     "paragon-span",
     "paragon-token",
 ]

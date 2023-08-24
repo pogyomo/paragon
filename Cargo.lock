@@ -44,6 +44,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "paragon-parser"
+version = "0.1.0"
+dependencies = [
+ "paragon-ast",
+ "paragon-cache",
+ "paragon-lexer",
+ "paragon-span",
+ "paragon-token",
+ "thiserror",
+]
+
+[[package]]
 name = "paragon-span"
 version = "0.1.0"
 dependencies = [

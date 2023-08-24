@@ -1,0 +1,12 @@
+[package]
+name = "paragon-parser"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+paragon-ast = { path = "../paragon-ast" }
+paragon-cache = { path = "../paragon-cache" }
+paragon-lexer = { path = "../paragon-lexer" }
+paragon-span = { path = "../paragon-span" }
+paragon-token = { path = "../paragon-token" }
+thiserror = "1.0.47"
