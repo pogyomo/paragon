@@ -2,12 +2,12 @@ use derive_new::new;
 use paragon_span::{Spannable, Span};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub enum Symbol<'src> {
-    GlobalSymbol(GlobalSymbol<'src>),
-    LocalSymbol(LocalSymbol<'src>),
+pub enum Symbol {
+    GlobalSymbol(GlobalSymbol),
+    LocalSymbol(LocalSymbol),
 }
 
-impl<'src> Spannable for Symbol<'src> {
+impl Spannable for Symbol {
     fn span(&self) -> Span {
         match self {
             Self::GlobalSymbol(sym) => sym.span(),
@@ -18,38 +18,38 @@ impl<'src> Spannable for Symbol<'src> {
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct GlobalSymbol<'src> {
-    pub name: &'src str,
+pub struct GlobalSymbol {
+    pub name: String,
     span: Span,
 }
 
-impl<'src> Spannable for GlobalSymbol<'src> {
+impl Spannable for GlobalSymbol {
     fn span(&self) -> Span {
         self.span
     }
 }
 
-impl<'src> From<GlobalSymbol<'src>> for Symbol<'src> {
-    fn from(value: GlobalSymbol<'src>) -> Self {
+impl From<GlobalSymbol> for Symbol {
+    fn from(value: GlobalSymbol) -> Self {
         Symbol::GlobalSymbol(value)
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct LocalSymbol<'src> {
-    pub name: &'src str,
+pub struct LocalSymbol {
+    pub name: String,
     span: Span,
 }
 
-impl<'src> Spannable for LocalSymbol<'src> {
+impl Spannable for LocalSymbol {
     fn span(&self) -> Span {
         self.span
     }
 }
 
-impl<'src> From<LocalSymbol<'src>> for Symbol<'src> {
-    fn from(value: LocalSymbol<'src>) -> Self {
+impl From<LocalSymbol> for Symbol {
+    fn from(value: LocalSymbol) -> Self {
         Symbol::LocalSymbol(value)
     }
 }

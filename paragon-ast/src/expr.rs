@@ -3,15 +3,15 @@ use paragon_span::{Span, Spannable};
 use crate::symbol::Symbol;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub enum Expression<'src> {
+pub enum Expression {
     IntegerExpression(IntegerExpression),
-    FunctionCallExpression(FunctionCallExpression<'src>),
-    SymbolExpression(SymbolExpression<'src>),
-    InfixExpression(InfixExpression<'src>),
-    UnaryExpression(UnaryExpression<'src>),
+    FunctionCallExpression(FunctionCallExpression),
+    SymbolExpression(SymbolExpression),
+    InfixExpression(InfixExpression),
+    UnaryExpression(UnaryExpression),
 }
 
-impl<'src> Spannable for Expression<'src> {
+impl Spannable for Expression {
     fn span(&self) -> Span {
         match self {
             Expression::IntegerExpression(int) => int.span(),
@@ -30,13 +30,13 @@ pub struct IntegerExpression {
     span: Span,
 }
 
-impl<'src> Spannable for IntegerExpression {
+impl Spannable for IntegerExpression {
     fn span(&self) -> Span {
         self.span
     }
 }
 
-impl<'src> From<IntegerExpression> for Expression<'src> {
+impl From<IntegerExpression> for Expression {
     fn from(value: IntegerExpression) -> Self {
         Expression::IntegerExpression(value)
     }
@@ -44,32 +44,32 @@ impl<'src> From<IntegerExpression> for Expression<'src> {
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct FunctionCallExpression<'src> {
-    pub name: FunctionCallExpressionName<'src>,
-    pub params: FunctionCallExpressionParams<'src>,
+pub struct FunctionCallExpression {
+    pub name: FunctionCallExpressionName,
+    pub params: FunctionCallExpressionParams,
     span: Span,
 }
 
-impl<'src> Spannable for FunctionCallExpression<'src> {
+impl Spannable for FunctionCallExpression {
     fn span(&self) -> Span {
         self.span
     }
 }
 
-impl<'src> From<FunctionCallExpression<'src>> for Expression<'src> {
-    fn from(value: FunctionCallExpression<'src>) -> Self {
+impl From<FunctionCallExpression> for Expression {
+    fn from(value: FunctionCallExpression) -> Self {
         Expression::FunctionCallExpression(value)
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct FunctionCallExpressionName<'src> {
-    pub name: &'src str,
+pub struct FunctionCallExpressionName {
+    pub name: String,
     span: Span,
 }
 
-impl<'src> Spannable for FunctionCallExpressionName<'src> {
+impl Spannable for FunctionCallExpressionName {
     fn span(&self) -> Span {
         self.span
     }
@@ -77,12 +77,12 @@ impl<'src> Spannable for FunctionCallExpressionName<'src> {
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct FunctionCallExpressionParams<'src> {
-    pub params: Vec<FunctionCallExpressionParam<'src>>,
+pub struct FunctionCallExpressionParams {
+    pub params: Vec<FunctionCallExpressionParam>,
     span: Span,
 }
 
-impl<'src> Spannable for FunctionCallExpressionParams<'src> {
+impl Spannable for FunctionCallExpressionParams {
     fn span(&self) -> Span {
         self.span
     }
@@ -90,12 +90,12 @@ impl<'src> Spannable for FunctionCallExpressionParams<'src> {
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct FunctionCallExpressionParam<'src> {
-    pub expr: Box<Expression<'src>>,
+pub struct FunctionCallExpressionParam {
+    pub expr: Box<Expression>,
     span: Span,
 }
 
-impl<'src> Spannable for FunctionCallExpressionParam<'src> {
+impl Spannable for FunctionCallExpressionParam {
     fn span(&self) -> Span {
         self.span
     }
@@ -103,40 +103,40 @@ impl<'src> Spannable for FunctionCallExpressionParam<'src> {
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct SymbolExpression<'src> {
-    pub symbol: Symbol<'src>,
+pub struct SymbolExpression {
+    pub symbol: Symbol,
     span: Span,
 }
 
-impl<'src> Spannable for SymbolExpression<'src> {
+impl Spannable for SymbolExpression {
     fn span(&self) -> Span {
         self.span
     }
 }
 
-impl<'src> From<SymbolExpression<'src>> for Expression<'src> {
-    fn from(value: SymbolExpression<'src>) -> Self {
+impl From<SymbolExpression> for Expression {
+    fn from(value: SymbolExpression) -> Self {
         Expression::SymbolExpression(value)
     }
 }
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct InfixExpression<'src> {
-    pub lhs: Box<Expression<'src>>,
-    pub rhs: Box<Expression<'src>>,
+pub struct InfixExpression {
+    pub lhs: Box<Expression>,
+    pub rhs: Box<Expression>,
     pub op: InfixOperator,
     span: Span,
 }
 
-impl<'src> Spannable for InfixExpression<'src> {
+impl Spannable for InfixExpression {
     fn span(&self) -> Span {
         self.span
     }
 }
 
-impl<'src> From<InfixExpression<'src>> for Expression<'src> {
-    fn from(value: InfixExpression<'src>) -> Self {
+impl From<InfixExpression> for Expression {
+    fn from(value: InfixExpression) -> Self {
         Expression::InfixExpression(value)
     }
 }
@@ -195,20 +195,20 @@ pub enum InfixOperatorKind {
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct UnaryExpression<'src> {
-    pub expr: Box<Expression<'src>>,
+pub struct UnaryExpression {
+    pub expr: Box<Expression>,
     pub op: UnaryOperator,
     span: Span,
 }
 
-impl<'src> Spannable for UnaryExpression<'src> {
+impl Spannable for UnaryExpression {
     fn span(&self) -> Span {
         self.span
     }
 }
 
-impl<'src> From<UnaryExpression<'src>> for Expression<'src> {
-    fn from(value: UnaryExpression<'src>) -> Self {
+impl From<UnaryExpression> for Expression {
+    fn from(value: UnaryExpression) -> Self {
         Expression::UnaryExpression(value)
     }
 }
