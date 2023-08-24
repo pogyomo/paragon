@@ -3,6 +3,7 @@ members = [
     "paragon",
     "paragon-ast",
     "paragon-cache",
+    "paragon-lexer",
     "paragon-span",
     "paragon-token",
 ]

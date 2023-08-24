@@ -104,7 +104,7 @@ Below is operators and symbols which the lexer recognize.
 ```
 
 ```
-( ) [ ] ,
+( ) [ ] , # :
 ```
 
 ### Keywords
@@ -280,12 +280,14 @@ fuga:
 <actual-inst-param> ::= <accumulator>
                       | <absolute-or-zeropage>
                       | <relative>
+                      | <immediate>
                       | <indirect>
 <accumulator> ::= "a"
 <absolute-or-zeropage> ::= <expression>
                          | <expression> "," "x"
                          | <expression> "," "y"
 <relative> ::= <identifier>
+<immediate> ::= '#' <expression>
 <indirect> ::= "[" <expression> [ "," "x" ] "]" [ "," "y" ]
 
 <pseudo-inst-params> ::= <pseudo-inst-param> [ <pseudo-inst-params> ]

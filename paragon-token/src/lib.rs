@@ -3,22 +3,22 @@ use derive_new::new;
 
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Token<'src> {
-    pub kind: TokenKind<'src>,
+pub struct Token {
+    pub kind: TokenKind,
     span: Span,
 }
 
-impl<'src> Spannable for Token<'src> {
+impl Spannable for Token {
     fn span(&self) -> Span {
         self.span
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub enum TokenKind<'src> {
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub enum TokenKind {
     // Literal
-    Identifier(&'src str),
-    Integer(&'src str, IntRadix),
+    Identifier(String),
+    Integer(String, IntRadix),
 
     // Oerators
     /// "+"
@@ -75,6 +75,10 @@ pub enum TokenKind<'src> {
     RSquare,
     /// ","
     Comma,
+    /// "#"
+    Sharp,
+    /// ":"
+    Colon,
 
     // Special
     /// '\n'
