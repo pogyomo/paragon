@@ -79,6 +79,8 @@ pub enum TokenKind {
     Sharp,
     /// ":"
     Colon,
+    /// "."
+    Dot,
 
     // Special
     /// '\n'

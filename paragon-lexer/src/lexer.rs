@@ -1,7 +1,5 @@
 // TODO: add tests
 
-use std::io;
-use std::path::PathBuf;
 use paragon_cache::FileId;
 use paragon_token::{Token, TokenKind, IntRadix};
 use paragon_span::Span;
@@ -9,8 +7,6 @@ use thiserror::Error;
 
 #[derive(Debug, Error)]
 pub enum LexError {
-    #[error("failed to open {path}: {reason}")]
-    FailedToOpenFile { path: PathBuf, reason: io::Error },
     #[error("integer with empty body")]
     IntegerWithEmptyBody { span: Span },
     #[error("unexpected character found")]
@@ -107,6 +103,7 @@ impl Lexer {
             (',', _) => self.one_char(TokenKind::Comma),
             ('#', _) => self.one_char(TokenKind::Sharp),
             (':', _) => self.one_char(TokenKind::Colon),
+            ('.', _) => self.one_char(TokenKind::Dot),
 
             // Special
             ('\n', _) => self.one_char(TokenKind::Newline),
