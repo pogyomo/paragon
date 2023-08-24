@@ -270,8 +270,8 @@ fuga:
 ### Instruction Statement
 
 ```
-<instruction-statement> ::= [ <symbol> ":" ]     <actual-inst-name> [ <actual-inst-params> ] <newline>
-                          | [ <symbol> ":" ] "." <pseudo-inst-name> [ <pseudo-inst-params> ] <newline>
+<instruction-statement> ::= [ <symbol> ":" ] [     <actual-inst-name> [ <actual-inst-params> ] ] <newline>
+                          | [ <symbol> ":" ] [ "." <pseudo-inst-name> [ <pseudo-inst-params> ] ] <newline>
 
 <actual-inst-name> ::= <identifier> | /* valid 6502 opcode names */
 <pseudo-inst-name> ::= /* valid pseudo instruction names */
