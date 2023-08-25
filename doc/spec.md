@@ -264,14 +264,23 @@ fuga:
 ## Statements
 
 ```
-<statement> ::= <instruction-statement>
+<statement> ::= <instruction-statement> <newline>
+              | <symbol-statement> <newline>
+              | <symbol-statement> <instruction-statement> <newline>
+              | <newline>
+```
+
+### Symbol Statement
+
+```
+<symbol-statement> ::= <symbol> ":"
 ```
 
 ### Instruction Statement
 
 ```
-<instruction-statement> ::= [ <symbol> ":" ] [     <actual-inst-name> [ <actual-inst-params> ] ] <newline>
-                          | [ <symbol> ":" ] [ "." <pseudo-inst-name> [ <pseudo-inst-params> ] ] <newline>
+<instruction-statement> ::=     <actual-inst-name> [ <actual-inst-params> ]
+                          | "." <pseudo-inst-name> [ <pseudo-inst-params> ]
 
 <actual-inst-name> ::= <identifier> | /* valid 6502 opcode names */
 <pseudo-inst-name> ::= /* valid pseudo instruction names */
