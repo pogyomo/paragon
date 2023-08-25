@@ -112,13 +112,7 @@ Below is operators and symbols which the lexer recognize.
 These keyword is reserved and cannot be used as identifier.
 
 ```
-adc	and	asl	bcc	bcs	beq	bit	bmi	bne	bpl	brk	bvc	bvs	clc
-cld	cli	clv	cmp	cpx	cpy	dec	dex	dey	eor	inc	inx	iny	jmp
-jsr	lda	ldx	ldy	lsr	nop	ora	pha	php	pla	plp	rol	ror	rti
-rts	sbc	sec	sed	sei	sta	stx	sty	tax	tay	tsx	txa	txs	tya
-
-equ ds db dw include incbin macro endmacro if ifdef ifndef
-elseif elseifdef elseifndef else endif error
+a x y
 ```
 
 ### Integer Literal
