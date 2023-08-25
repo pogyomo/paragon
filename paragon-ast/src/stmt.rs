@@ -46,7 +46,7 @@ impl From<SymbolStatement> for Statement {
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InstructionStatement {
     pub name: InstructionName,
-    pub params: InstructionParams,
+    pub params: Vec<InstructionParam>,
     span: Span,
 }
 
@@ -75,25 +75,23 @@ impl Spannable for InstructionName {
     }
 }
 
-#[derive(new)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct InstructionParams {
-    pub params: Vec<InstructionParam>,
-    span: Span,
-}
-
-impl Spannable for InstructionParams {
-    fn span(&self) -> Span {
-        self.span
-    }
-}
-
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub enum InstructionParam {
     Accumulator(Accumulator),
-    AbsoluteOrZeropage(AbsoluteOrZeropage),
-    Relative(Relative),
+    AbsoluteOrZeropageOrRelative(AbsoluteOrZeropageOrRelative),
+    Immediate(Immediate),
     Indirect(Indirect),
+}
+
+impl Spannable for InstructionParam {
+    fn span(&self) -> Span {
+        match self {
+            Self::Accumulator(a) => a.span(),
+            Self::AbsoluteOrZeropageOrRelative(a) => a.span(),
+            Self::Immediate(i) => i.span(),
+            Self::Indirect(i) => i.span(),
+        }
+    }
 }
 
 #[derive(new)]
@@ -108,31 +106,50 @@ impl Spannable for Accumulator {
     }
 }
 
+impl From<Accumulator> for InstructionParam {
+    fn from(value: Accumulator) -> Self {
+        InstructionParam::Accumulator(value)
+    }
+}
+
 /// expr [ , x ] | [ , y ]
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct AbsoluteOrZeropage {
+pub struct AbsoluteOrZeropageOrRelative {
     pub expr: Expression,
     pub register: Option<IndexableRegister>,
     span: Span,
 }
 
-impl Spannable for AbsoluteOrZeropage {
+impl Spannable for AbsoluteOrZeropageOrRelative {
     fn span(&self) -> Span {
         self.span
     }
 }
 
+impl From<AbsoluteOrZeropageOrRelative> for InstructionParam {
+    fn from(value: AbsoluteOrZeropageOrRelative) -> Self {
+        InstructionParam::AbsoluteOrZeropageOrRelative(value)
+    }
+}
+
+/// #expr
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Relative {
-    pub symbol: Symbol,
+pub struct Immediate {
+    pub expr: Expression,
     span: Span,
 }
 
-impl Spannable for Relative {
+impl Spannable for Immediate {
     fn span(&self) -> Span {
         self.span
+    }
+}
+
+impl From<Immediate> for InstructionParam {
+    fn from(value: Immediate) -> Self {
+        InstructionParam::Immediate(value)
     }
 }
 
@@ -150,6 +167,13 @@ impl Spannable for Indirect {
     }
 }
 
+impl From<Indirect> for InstructionParam {
+    fn from(value: Indirect) -> Self {
+        InstructionParam::Indirect(value)
+    }
+}
+
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct IndexableRegister {
     pub kind: IndexableRegisterKind,
@@ -173,7 +197,7 @@ pub enum IndexableRegisterKind {
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PseudoInstructionStatement {
     pub name: PseudoInstructionName,
-    pub params: PseudoInstructionParams,
+    pub params: Vec<PseudoInstructionParam>,
     span: Span,
 }
 
@@ -197,19 +221,6 @@ pub struct PseudoInstructionName {
 }
 
 impl Spannable for PseudoInstructionName {
-    fn span(&self) -> Span {
-        self.span
-    }
-}
-
-#[derive(new)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct PseudoInstructionParams {
-    pub params: Vec<PseudoInstructionParam>,
-    span: Span,
-}
-
-impl Spannable for PseudoInstructionParams {
     fn span(&self) -> Span {
         self.span
     }

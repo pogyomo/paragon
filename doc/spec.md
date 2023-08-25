@@ -281,15 +281,13 @@ fuga:
 
 <actual-inst-params> ::= <actual-inst-param> [ <actual-inst-params> ]
 <actual-inst-param> ::= <accumulator>
-                      | <absolute-or-zeropage>
-                      | <relative>
+                      | <absolute-or-zeropage-or-relative>
                       | <immediate>
                       | <indirect>
 <accumulator> ::= "a"
-<absolute-or-zeropage> ::= <expression>
-                         | <expression> "," "x"
-                         | <expression> "," "y"
-<relative> ::= <identifier>
+<absolute-or-zeropage-or-relative> ::= <expression>
+                                     | <expression> "," "x"
+                                     | <expression> "," "y"
 <immediate> ::= '#' <expression>
 <indirect> ::= "[" <expression> [ "," "x" ] "]" [ "," "y" ]
 
