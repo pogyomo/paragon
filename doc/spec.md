@@ -380,15 +380,13 @@ called after this instruction.
 
 ### .equ
 
-SYNTAX: `symbol .equ expr` or `.symbol .equ expr`
+SYNTAX: `.equ symbol expr` or `.equ .symbol expr`
 
-The `.equ` (or `=`) instruction assign given expression to the symbol.
+The `.equ` instruction assign given expression to the symbol.
 
 ```
-hoge: .equ 10 + 20
-.fuga: .equ 2
-
-hoge: = 2 // equal to hoge .equ 2
+    .equ hoge 10 + 20
+    .equ .fuga 2
 ```
 
 ### .org
