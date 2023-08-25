@@ -6,6 +6,7 @@ use crate::{symbol::Symbol, expr::Expression};
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Statement {
+    SymbolStatement(SymbolStatement),
     InstructionStatement(InstructionStatement),
     PseudoInstructionStatement(PseudoInstructionStatement),
 }
@@ -13,18 +14,39 @@ pub enum Statement {
 impl Spannable for Statement {
     fn span(&self) -> Span {
         match self {
+            Statement::SymbolStatement(sym) => sym.span(),
             Statement::InstructionStatement(inst) => inst.span(),
             Statement::PseudoInstructionStatement(pseudo) => pseudo.span(),
         }
     }
 }
 
-/// [ symbol: ] name params
+/// symbol:
+#[derive(new)]
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct SymbolStatement {
+    pub symbol: Symbol,
+    span: Span,
+}
+
+impl Spannable for SymbolStatement {
+    fn span(&self) -> Span {
+        self.span
+    }
+}
+
+impl From<SymbolStatement> for Statement {
+    fn from(value: SymbolStatement) -> Self {
+        Statement::SymbolStatement(value)
+    }
+}
+
+/// name params
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InstructionStatement {
-    pub symbol: Option<InstructionSymbol>,
-    pub body: Option<InstructionBody>,
+    pub name: InstructionName,
+    pub params: InstructionParams,
     span: Span,
 }
 
@@ -37,33 +59,6 @@ impl Spannable for InstructionStatement {
 impl From<InstructionStatement> for Statement {
     fn from(value: InstructionStatement) -> Self {
         Statement::InstructionStatement(value)
-    }
-}
-
-#[derive(new)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct InstructionSymbol {
-    pub symbol: Symbol,
-    span: Span,
-}
-
-impl Spannable for InstructionSymbol {
-    fn span(&self) -> Span {
-        self.span
-    }
-}
-
-#[derive(new)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct InstructionBody {
-    pub name: InstructionName,
-    pub params: InstructionParams,
-    span: Span,
-}
-
-impl Spannable for InstructionBody {
-    fn span(&self) -> Span {
-        self.span
     }
 }
 
@@ -173,12 +168,12 @@ pub enum IndexableRegisterKind {
     Y,
 }
 
-/// [ symbol: ] .name params
+/// .name params
 #[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct PseudoInstructionStatement {
-    pub symbol: Option<PseudoInstructionSymbol>,
-    pub body: Option<PseudoInstructionBody>,
+    pub name: PseudoInstructionName,
+    pub params: PseudoInstructionParams,
     span: Span,
 }
 
@@ -191,33 +186,6 @@ impl Spannable for PseudoInstructionStatement {
 impl From<PseudoInstructionStatement> for Statement {
     fn from(value: PseudoInstructionStatement) -> Self {
         Statement::PseudoInstructionStatement(value)
-    }
-}
-
-#[derive(new)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct PseudoInstructionSymbol {
-    pub symbol: Symbol,
-    span: Span,
-}
-
-impl Spannable for PseudoInstructionSymbol {
-    fn span(&self) -> Span {
-        self.span
-    }
-}
-
-#[derive(new)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct PseudoInstructionBody {
-    pub name: PseudoInstructionName,
-    pub params: PseudoInstructionParams,
-    span: Span,
-}
-
-impl Spannable for PseudoInstructionBody {
-    fn span(&self) -> Span {
-        self.span
     }
 }
 
