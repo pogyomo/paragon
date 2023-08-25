@@ -82,6 +82,14 @@ pub enum TokenKind {
     /// "."
     Dot,
 
+    // Keywords
+    /// "a"
+    A,
+    /// "x"
+    X,
+    /// "y"
+    Y,
+
     // Special
     /// '\n'
     Newline,

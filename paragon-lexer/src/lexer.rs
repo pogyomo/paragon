@@ -184,7 +184,12 @@ impl Lexer {
         }
         let end = self.curr_offset();
 
-        let kind = TokenKind::Identifier(body);
+        let kind = match body.as_str() {
+            "a" => TokenKind::A,
+            "x" => TokenKind::X,
+            "y" => TokenKind::Y,
+            _ => TokenKind::Identifier(body),
+        };
         let span = Span::new(self.id, start, end);
         Some(Ok(Token::new(kind, span)))
     }
