@@ -239,8 +239,8 @@ typeof("hello") // => "string"
 
 ### bankof
 
-The `bankof` function take a identifier and return the bank number where the identifier
-is defined. If passed value is not identifier, cause error.
+The `bankof` function take a symbol and return the bank number where the symbol 
+is defined. If passed value is not a symbol, cause error.
 
 ```
     .bank 0
