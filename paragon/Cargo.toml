@@ -6,3 +6,4 @@ edition = "2021"
 [dependencies]
 paragon-cache = { path = "../paragon-cache" }
 paragon-lexer = { path = "../paragon-lexer" }
+paragon-parser = { path = "../paragon-parser" }

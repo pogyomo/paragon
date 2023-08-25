@@ -4,6 +4,7 @@ use crate::symbol::Symbol;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub enum Expression {
+    SurroundedExpression(SurroundedExpression),
     IntegerExpression(IntegerExpression),
     FunctionCallExpression(FunctionCallExpression),
     SymbolExpression(SymbolExpression),
@@ -14,12 +15,38 @@ pub enum Expression {
 impl Spannable for Expression {
     fn span(&self) -> Span {
         match self {
+            Expression::SurroundedExpression(surr) => surr.span(),
             Expression::IntegerExpression(int) => int.span(),
             Expression::FunctionCallExpression(func) => func.span(),
             Expression::SymbolExpression(sym) => sym.span(),
             Expression::InfixExpression(infix) => infix.span(),
             Expression::UnaryExpression(unary) => unary.span(),
         }
+    }
+}
+
+/// (expr)
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
+pub struct SurroundedExpression {
+    pub expr: Box<Expression>,
+    span: Span,
+}
+
+impl SurroundedExpression {
+    pub fn new(expr: Expression, span: Span) -> Self {
+        Self { expr: Box::new(expr), span }
+    }
+}
+
+impl Spannable for SurroundedExpression {
+    fn span(&self) -> Span {
+        self.span
+    }
+}
+
+impl From<SurroundedExpression> for Expression {
+    fn from(value: SurroundedExpression) -> Self {
+        Expression::SurroundedExpression(value)
     }
 }
 
@@ -46,7 +73,7 @@ impl From<IntegerExpression> for Expression {
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct FunctionCallExpression {
     pub name: FunctionCallExpressionName,
-    pub params: FunctionCallExpressionParams,
+    pub params: Vec<FunctionCallExpressionParam>,
     span: Span,
 }
 
@@ -75,29 +102,20 @@ impl Spannable for FunctionCallExpressionName {
     }
 }
 
-#[derive(new)]
-#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
-pub struct FunctionCallExpressionParams {
-    pub params: Vec<FunctionCallExpressionParam>,
-    span: Span,
-}
-
-impl Spannable for FunctionCallExpressionParams {
-    fn span(&self) -> Span {
-        self.span
-    }
-}
-
-#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct FunctionCallExpressionParam {
     pub expr: Box<Expression>,
-    span: Span,
+}
+
+impl FunctionCallExpressionParam {
+    pub fn new(expr: Expression) -> Self {
+        Self { expr: Box::new(expr) }
+    }
 }
 
 impl Spannable for FunctionCallExpressionParam {
     fn span(&self) -> Span {
-        self.span
+        self.expr.span()
     }
 }
 
@@ -105,12 +123,11 @@ impl Spannable for FunctionCallExpressionParam {
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct SymbolExpression {
     pub symbol: Symbol,
-    span: Span,
 }
 
 impl Spannable for SymbolExpression {
     fn span(&self) -> Span {
-        self.span
+        self.symbol.span()
     }
 }
 
@@ -120,18 +137,22 @@ impl From<SymbolExpression> for Expression {
     }
 }
 
-#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InfixExpression {
     pub lhs: Box<Expression>,
     pub rhs: Box<Expression>,
     pub op: InfixOperator,
-    span: Span,
+}
+
+impl InfixExpression {
+    pub fn new(lhs: Expression, rhs: Expression, op: InfixOperator) -> Self {
+        Self { lhs: Box::new(lhs), rhs: Box::new(rhs), op }
+    }
 }
 
 impl Spannable for InfixExpression {
     fn span(&self) -> Span {
-        self.span
+        self.lhs.span() + self.rhs.span()
     }
 }
 
@@ -141,6 +162,7 @@ impl From<InfixExpression> for Expression {
     }
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct InfixOperator {
     pub kind: InfixOperatorKind,
@@ -193,17 +215,21 @@ pub enum InfixOperatorKind {
     Mod,
 }
 
-#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct UnaryExpression {
     pub expr: Box<Expression>,
     pub op: UnaryOperator,
-    span: Span,
+}
+
+impl UnaryExpression {
+    pub fn new(expr: Expression, op: UnaryOperator) -> Self {
+        Self { expr: Box::new(expr), op }
+    }
 }
 
 impl Spannable for UnaryExpression {
     fn span(&self) -> Span {
-        self.span
+        self.expr.span() + self.op.span()
     }
 }
 
@@ -213,6 +239,7 @@ impl From<UnaryExpression> for Expression {
     }
 }
 
+#[derive(new)]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord)]
 pub struct UnaryOperator {
     pub kind: UnaryOperatorKind,
@@ -233,4 +260,8 @@ pub enum UnaryOperatorKind {
     BitNot,
     /// "!"
     Not,
+    /// "<"
+    LSB,
+    /// ">"
+    MSB,
 }

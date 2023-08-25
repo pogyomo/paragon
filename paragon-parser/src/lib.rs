@@ -9,15 +9,13 @@ use paragon_lexer::lex;
 
 pub use parser::ParseError;
 
-type ParseResult = io::Result<Result<Vec<Statement>, Vec<ParseError>>>;
+type ParseResult = io::Result<Result<Vec<Statement>, ParseError>>;
 
 /// Parse a file.
 pub fn parse<P: AsRef<Path>>(path: P, cache: &mut FileCache) -> ParseResult {
     let tokens = match lex(path, cache)? {
         Ok(tokens) => tokens,
-        Err(errors) => return Ok(Err(vec![
-            ParseError::LexError { errors }
-        ]))
+        Err(errors) => return Ok(Err(ParseError::LexError { errors }))
     };
     Ok(Parser::new(tokens).parse())
 }
