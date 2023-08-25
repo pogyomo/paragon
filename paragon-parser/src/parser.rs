@@ -46,8 +46,17 @@ impl Parser {
         }
 
         let mut stmts = Vec::new();
-        while self.tokens.get(self.position).is_some() {
-            stmts.push(self.parse_statement()?);
+        loop {
+            // Skip blank statements
+            while self.curr_token_kind_is(TokenKind::Newline) {
+                self.advance_position();
+            }
+
+            if self.tokens.get(self.position).is_some() {
+                stmts.push(self.parse_statement()?);
+            } else {
+                break;
+            }
         }
         Ok(stmts)
     }
@@ -55,16 +64,13 @@ impl Parser {
 
 impl Parser {
     fn parse_statement(&mut self) -> Result<Statement, ParseError> {
-        if
-            matches!(self.next_token_or_err()?.kind, TokenKind::Colon) ||
-            matches!(self.nth_token_or_err(2)?.kind, TokenKind::Colon)
-        {
+        if self.next_token_kind_is(TokenKind::Colon) || self.nth_token_kind_is(2, TokenKind::Colon) {
             let symbol = self.parse_symbol_statement()?;
             if matches!(self.curr_token_or_err()?.kind, TokenKind::Newline) {
                 self.advance_position();
             }
             Ok(symbol.into())
-        } else if matches!(self.curr_token_or_err()?.kind, TokenKind::Dot) {
+        } else if self.curr_token_kind_is(TokenKind::Dot) {
             let pseudo = self.parse_pseudo_instruction_statement()?;
             if matches!(self.curr_token_or_err()?.kind, TokenKind::Newline) {
                 self.advance_position();
@@ -713,28 +719,56 @@ impl Parser {
         token
     }
 
+    fn curr_token(&self) -> Option<Rc<Token>> {
+        self.tokens.get(self.position).map(|v| Rc::clone(v))
+    }
+
     fn curr_token_or_err(&self) -> Result<Rc<Token>, ParseError> {
-        self.tokens.get(self.position)
-            .map(|t| Rc::clone(t))
-            .ok_or(ParseError::ExpectedTokenButNotFound { 
-                last: self.tokens.last().unwrap().span()
-            })
+        self.curr_token().ok_or(ParseError::ExpectedTokenButNotFound { 
+            last: self.tokens.last().unwrap().span()
+        })
+    }
+
+    fn curr_token_kind_is(&self, kind: TokenKind) -> bool {
+        match self.curr_token() {
+            Some(tk) if tk.kind == kind => true,
+            _ => false,
+        }
+    }
+
+    fn next_token(&self) -> Option<Rc<Token>> {
+        self.tokens.get(self.position + 1).map(|v| Rc::clone(v))
     }
 
     fn next_token_or_err(&self) -> Result<Rc<Token>, ParseError> {
-        self.tokens.get(self.position + 1)
-            .map(|t| Rc::clone(t))
-            .ok_or(ParseError::ExpectedTokenButNotFound {
-                last: self.tokens.last().unwrap().span()
-            })
+        self.next_token().ok_or(ParseError::ExpectedTokenButNotFound {
+            last: self.tokens.last().unwrap().span()
+        })
     }
 
+    fn next_token_kind_is(&self, kind: TokenKind) -> bool {
+        match self.next_token() {
+            Some(tk) if tk.kind == kind => true,
+            _ => false,
+        }
+    }
+
+    fn nth_token(&self, n: usize) -> Option<Rc<Token>> {
+        self.tokens.get(self.position + n).map(|v| Rc::clone(v))
+    }
+
+    #[allow(unused)]
     fn nth_token_or_err(&self, n: usize) -> Result<Rc<Token>, ParseError> {
-        self.tokens.get(self.position + n)
-            .map(|t| Rc::clone(t))
-            .ok_or(ParseError::ExpectedTokenButNotFound {
-                last: self.tokens.last().unwrap().span()
-            })
+        self.nth_token(n).ok_or(ParseError::ExpectedTokenButNotFound {
+            last: self.tokens.last().unwrap().span()
+        })
+    }
+
+    fn nth_token_kind_is(&self, n: usize, kind: TokenKind) -> bool {
+        match self.nth_token(n) {
+            Some(tk) if tk.kind == kind => true,
+            _ => false,
+        }
     }
 
     fn advance_position(&mut self) {
