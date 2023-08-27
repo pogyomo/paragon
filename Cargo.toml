@@ -3,8 +3,11 @@ members = [
     "paragon",
     "paragon-ast",
     "paragon-cache",
+    "paragon-eval",
     "paragon-lexer",
+    "paragon-object",
     "paragon-parser",
     "paragon-span",
+    "paragon-symtable",
     "paragon-token",
 ]

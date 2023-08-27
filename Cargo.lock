@@ -35,6 +35,17 @@ name = "paragon-cache"
 version = "0.1.0"
 
 [[package]]
+name = "paragon-eval"
+version = "0.1.0"
+dependencies = [
+ "paragon-ast",
+ "paragon-object",
+ "paragon-span",
+ "paragon-symtable",
+ "thiserror",
+]
+
+[[package]]
 name = "paragon-lexer"
 version = "0.1.0"
 dependencies = [
@@ -42,6 +53,14 @@ dependencies = [
  "paragon-span",
  "paragon-token",
  "thiserror",
+]
+
+[[package]]
+name = "paragon-object"
+version = "0.1.0"
+dependencies = [
+ "derive-new",
+ "paragon-span",
 ]
 
 [[package]]
@@ -61,6 +80,14 @@ name = "paragon-span"
 version = "0.1.0"
 dependencies = [
  "paragon-cache",
+]
+
+[[package]]
+name = "paragon-symtable"
+version = "0.1.0"
+dependencies = [
+ "paragon-ast",
+ "paragon-object",
 ]
 
 [[package]]

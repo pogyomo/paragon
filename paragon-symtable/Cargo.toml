@@ -1,0 +1,8 @@
+[package]
+name = "paragon-symtable"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+paragon-ast = { path = "../paragon-ast" }
+paragon-object = { path = "../paragon-object" }
